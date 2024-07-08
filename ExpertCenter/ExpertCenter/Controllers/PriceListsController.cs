@@ -1,31 +1,37 @@
-using ExpertCenter.Models;
+using DataAccess.Context;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExpertCenter.Controllers
 {
-    public class HomeController : Controller
+    public class PriceListsController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly PriceListContext context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public PriceListsController(PriceListContext _context)
         {
-            _logger = logger;
+            context = _context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var lists = context.PriceList.ToList();
+            return View(lists);
         }
 
         public IActionResult Privacy()
         {
             return View();
         }
-
-        public IActionResult PriceList() 
+        
+        public IActionResult PriceList(int id) 
         {
-            return View();
+            var list = context.PriceList.Where(p => p.Id == id)
+                .Include(p => p.PriceListRows)
+                    .ThenInclude(r => r.PriceListCellValues)
+                .Include(p => p.PriceListColumns)
+                .FirstOrDefault();
+            return View(list);
         }
     }
 }

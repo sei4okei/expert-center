@@ -1,4 +1,4 @@
-﻿@model IEnumerable<YourNamespace.YourModel>
+﻿@model IEnumerable<DataAccess.Models.PriceList>
 
 <!DOCTYPE html>
 <html>
@@ -22,7 +22,7 @@
                 {
                     <tr>
                         <td>@item.Id</td>
-                        <td><a href="#">@item.Name</a></td>
+                        <td><a asp-controller="PriceLists" asp-action="PriceList" asp-route-id="@item.Id">@item.Name</a></td>
                     </tr>
                 }
             </tbody>

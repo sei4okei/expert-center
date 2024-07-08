@@ -1,7 +1,13 @@
+using DataAccess.Context;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+string conn = builder.Configuration.GetConnectionString("ExpertCenter");
+builder.Services.AddDbContext<PriceListContext>(options => options.UseSqlServer(conn));
 
 var app = builder.Build();
 
@@ -18,6 +24,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=PriceLists}/{action=Index}/{id?}");
 
 app.Run();

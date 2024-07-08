@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DataAccess.Models
+namespace DataAccess.Models;
+
+public partial class PriceListCellValue
 {
-    internal class PriceListCellValue
-    {
-        public int Id { get; set; }
-        public int RowId { get; set; }
-        public virtual PriceListRow Row { get; set; }
+    public int Id { get; set; }
 
-        public int ColumnId { get; set; }
-        public virtual PriceListColumn Column { get; set; }
+    public int RowId { get; set; }
 
-        public string Value { get; set; }
-    }
+    public int ColumnId { get; set; }
+
+    public string Value { get; set; }/* = null!;*/
+
+    public virtual PriceListColumn Column { get; set; }/* = null!;*/
+
+    public virtual PriceListRow Row { get; set; }/* = null!;*/
 }

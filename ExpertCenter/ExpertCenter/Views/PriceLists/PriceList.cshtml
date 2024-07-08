@@ -1,4 +1,4 @@
-﻿@model YourNamespace.Models.PriceList
+﻿@model DataAccess.Models.PriceList;
 
 <!DOCTYPE html>
 <html>
@@ -15,19 +15,17 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Название товара</th>
-                    <th>Код товара</th>
-                    @foreach (var column in Model.Columns)
+                    @foreach (var column in Model.PriceListColumns)
                     {
-                        <th>@column.ColumnName</th>
+                        <th>@column.Name</th>
                     }
                 </tr>
             </thead>
             <tbody>
-                @foreach (var row in Model.Rows)
+                @foreach (var row in Model.PriceListRows)
                 {
                     <tr>
-                        @foreach (var cell in row.CellValues.OrderBy(c => c.ColumnId))
+                        @foreach (var cell in row.PriceListCellValues.OrderBy(c => c.ColumnId))
                         {
                             <td>@cell.Value</td>
                         }

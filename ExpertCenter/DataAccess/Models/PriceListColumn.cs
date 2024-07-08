@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DataAccess.Models
+namespace DataAccess.Models;
+
+public partial class PriceListColumn
 {
-    internal class PriceListColumn
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string DataType { get; set; }
+    public int Id { get; set; }
 
-        public int PriceListId { get; set; }
-        public virtual PriceList PriceList { get; set; }
-    }
+    public string Name { get; set; }/* = null!;*/
+
+    public string DataType { get; set; }/* = null!;*/
+
+    public int PriceListId { get; set; }
+
+    public virtual PriceList PriceList { get; set; }/* = null!;*/
+
+    public virtual ICollection<PriceListCellValue> PriceListCellValues { get; set; }/* = new List<PriceListCellValue>();*/
 }
