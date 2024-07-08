@@ -1,0 +1,43 @@
+﻿@model YourNamespace.Models.PriceList
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@Model.Name</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <h1>@Model.Name</h1>
+        <a href="#" class="btn btn-primary mb-3">+ Добавить позицию</a>
+        <a href="@Url.Action("Index", "PriceList")" class="btn btn-secondary mb-3">Назад к списку</a>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Название товара</th>
+                    <th>Код товара</th>
+                    @foreach (var column in Model.Columns)
+                    {
+                        <th>@column.ColumnName</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var row in Model.Rows)
+                {
+                    <tr>
+                        @foreach (var cell in row.CellValues.OrderBy(c => c.ColumnId))
+                        {
+                            <td>@cell.Value</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
