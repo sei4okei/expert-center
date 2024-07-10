@@ -9,7 +9,7 @@ public partial class PriceList
 
     public string Name { get; set; }/* = null!;*/
 
-    public DateOnly CreatedDate { get; set; }
+    public DateTime CreatedDate { get; set; }
 
     public virtual ICollection<PriceListColumn> PriceListColumns { get; set; }/* = new List<PriceListColumn>();*/
 

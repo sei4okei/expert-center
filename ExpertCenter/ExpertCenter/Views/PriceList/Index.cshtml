@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <h1>Прайсы</h1>
-        <a href="#" class="btn btn-primary mb-3">Прайс-лист</a>
+        <a asp-controller="PriceList" asp-action="Create" class="btn btn-primary mb-3">Прайс-лист</a>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -22,7 +22,7 @@
                 {
                     <tr>
                         <td>@item.Id</td>
-                        <td><a asp-controller="PriceLists" asp-action="PriceList" asp-route-id="@item.Id">@item.Name</a></td>
+                        <td><a asp-controller="PriceList" asp-action="PriceList" asp-route-id="@item.Id">@item.Name</a></td>
                     </tr>
                 }
             </tbody>

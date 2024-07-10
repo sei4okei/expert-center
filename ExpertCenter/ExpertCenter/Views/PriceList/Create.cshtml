@@ -1,0 +1,97 @@
+﻿@model BusinessLogic.Models.CreatePriceListViewModel
+
+@{
+    ViewBag.Title = "Добавление прайс-листа";
+}
+
+<h2>Добавление прайс-листа</h2>
+
+<form asp-action="Create" asp-controller="PriceList" method="post" enctype="multipart/form-data">
+
+    <div class="form-horizontal">
+        <h4>Название прайс-листа</h4>
+        <hr />
+        <div class="form-group">
+            <label asp-for="Name" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+
+        <h4>Добавить колонки</h4>
+        <hr />
+        <div id="columns">
+            <div class="form-group row">
+                <label class="col-md-2 control-label">Колонка 1</label>
+                <div class="col-md-4">
+                    <input type="text" name="Columns[0].ColumnName" class="form-control" placeholder="Название колонки" />
+                </div>
+                <div class="col-md-4">
+                    <select name="Columns[0].DataType" class="form-control">
+                        <option value="String">Однострочный текст</option>
+                        <option value="MultilineText">Многострочный текст</option>
+                        <option value="Number">Число</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-danger" onclick="removeColumn(this)">Удалить</button>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-default" onclick="addColumn()">Добавить колонку</button>
+
+        <div class="form-group mt-4">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Продолжить" class="btn btn-primary" />
+                <a asp-action="Index" asp-controller="PriceList" class="btn btn-default">Отмена</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.11/dist/jquery.validate.unobtrusive.min.js"></script>
+
+    <script type="text/javascript">
+        var columnCount = 1;
+
+        function addColumn() {
+            columnCount++;
+            var columnHtml = `
+                        <div class="form-group row">
+                            <label class="col-md-2 control-label">Колонка ${columnCount}</label>
+                            <div class="col-md-4">
+                                <input type="text" name="Columns[${columnCount - 1}].ColumnName" class="form-control" placeholder="Название колонки" />
+                            </div>
+                            <div class="col-md-4">
+                                <select name="Columns[${columnCount - 1}].DataType" class="form-control">
+                                    <option value="String">Однострочный текст</option>
+                                    <option value="MultilineText">Многострочный текст</option>
+                                    <option value="Number">Число</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-danger" onclick="removeColumn(this)">Удалить</button>
+                            </div>
+                        </div>`;
+            $("#columns").append(columnHtml);
+        }
+
+        function removeColumn(button) {
+            $(button).closest('.form-group').remove();
+            columnCount--;
+            updateColumnLabels();
+        }
+
+        function updateColumnLabels() {
+            $("#columns .form-group").each(function (index) {
+                $(this).find("label").text(`Колонка ${index + 1}`);
+                $(this).find("input").attr("name", `Columns[${index}].ColumnName`);
+                $(this).find("select").attr("name", `Columns[${index}].DataType`);
+            });
+        }
+    </script>
+}

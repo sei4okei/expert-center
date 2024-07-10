@@ -1,13 +1,21 @@
 using DataAccess.Context;
+using DataAccess.Interfaces;
+using DataAccess.Repositories;
+using BusinessLogic.Interfaces;
+using BusinessLogic.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-
 string conn = builder.Configuration.GetConnectionString("ExpertCenter");
 builder.Services.AddDbContext<PriceListContext>(options => options.UseSqlServer(conn));
+
+builder.Services.AddScoped<IPriceListRepository, PriceListRepository>();
+builder.Services.AddScoped<IPriceListColumnRepository, PriceListColumnRepository>();
+
+builder.Services.AddScoped<IPriceListService, PriceListService>();
+
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
@@ -24,6 +32,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=PriceLists}/{action=Index}/{id?}");
+    pattern: "{controller=PriceList}/{action=Index}/{id?}");
 
 app.Run();
