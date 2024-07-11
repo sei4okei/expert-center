@@ -9,7 +9,7 @@ public partial class PriceListRow
 
     public int PriceListId { get; set; }
 
-    public virtual PriceList PriceList { get; set; }/* = null!;*/
+    public virtual PriceList PriceList { get; set; }
 
-    public virtual ICollection<PriceListCellValue> PriceListCellValues { get; set; }/* = new List<PriceListCellValue>();*/
+    public virtual ICollection<PriceListCellValue> PriceListCellValues { get; set; }
 }

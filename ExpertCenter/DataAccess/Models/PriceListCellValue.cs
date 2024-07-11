@@ -11,9 +11,9 @@ public partial class PriceListCellValue
 
     public int ColumnId { get; set; }
 
-    public string Value { get; set; }/* = null!;*/
+    public string Value { get; set; }
 
-    public virtual PriceListColumn Column { get; set; }/* = null!;*/
+    public virtual PriceListColumn Column { get; set; }
 
-    public virtual PriceListRow Row { get; set; }/* = null!;*/
+    public virtual PriceListRow Row { get; set; }
 }

@@ -27,7 +27,7 @@ namespace BusinessLogic.Services
 
             return new CreatePriceListViewModel()
             {
-                Columns = existingColumns.Select(x => new ColumnViewModel
+                Columns = existingColumns.Select(x => new Models.ColumnViewModel
                 {
                     Id = x.Id,
                     Name = x.Name,

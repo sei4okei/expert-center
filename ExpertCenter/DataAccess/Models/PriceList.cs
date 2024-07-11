@@ -7,11 +7,11 @@ public partial class PriceList
 {
     public int Id { get; set; }
 
-    public string Name { get; set; }/* = null!;*/
+    public string Name { get; set; }
 
     public DateTime CreatedDate { get; set; }
 
-    public virtual ICollection<PriceListColumn> PriceListColumns { get; set; }/* = new List<PriceListColumn>();*/
+    public virtual ICollection<PriceListColumn> PriceListColumns { get; set; }
 
-    public virtual ICollection<PriceListRow> PriceListRows { get; set; }/* = new List<PriceListRow>();*/
+    public virtual ICollection<PriceListRow> PriceListRows { get; set; }
 }

@@ -1,18 +1,17 @@
-﻿@model DataAccess.Models.PriceList;
+﻿@model DataAccess.Models.PriceList
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>@Model.Name</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Детали прайс-листа</title>
 </head>
 <body>
     <div class="container">
         <h1>@Model.Name</h1>
-        <a href="#" class="btn btn-primary mb-3">+ Добавить позицию</a>
-        <a asp-action="Index" asp-controller="PriceLists" class="btn btn-secondary mb-3">Назад к списку</a>
-
-        <table class="table table-striped">
+        <table class="table">
             <thead>
                 <tr>
                     @foreach (var column in Model.PriceListColumns)
@@ -25,7 +24,7 @@
                 @foreach (var row in Model.PriceListRows)
                 {
                     <tr>
-                        @foreach (var cell in row.PriceListCellValues.OrderBy(c => c.ColumnId))
+                        @foreach (var cell in row.PriceListCellValues)
                         {
                             <td>@cell.Value</td>
                         }
@@ -33,9 +32,7 @@
                 }
             </tbody>
         </table>
+        <a class="btn btn-primary" asp-action="AddRow" asp-route-id="@Model.Id">Добавить строку</a>
     </div>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

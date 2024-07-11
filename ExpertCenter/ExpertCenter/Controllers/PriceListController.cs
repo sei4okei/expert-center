@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using DataAccess.Models;
 
 namespace ExpertCenter.Controllers
 {
@@ -46,7 +47,7 @@ namespace ExpertCenter.Controllers
         {
             if (!string.IsNullOrEmpty(addColumn))
             {
-                model.Columns.Add(new ColumnViewModel());
+                model.Columns.Add(new BusinessLogic.Models.ColumnViewModel());
                 return View(model);
             }
 
@@ -72,5 +73,25 @@ namespace ExpertCenter.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> AddRow(int id)
+        {
+            var model = await _priceListRepository.GetAddRowViewModelAsync(id);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddRow(AddRowViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await _priceListRepository.AddRowAsync(model);
+                return RedirectToAction("PriceList", new { id = model.PriceListId });
+            }
+            return View(model);
+        }
+
     }
 }
