@@ -12,6 +12,7 @@ builder.Services.AddDbContext<PriceListContext>(options => options.UseSqlServer(
 
 builder.Services.AddScoped<IPriceListRepository, PriceListRepository>();
 builder.Services.AddScoped<IPriceListColumnRepository, PriceListColumnRepository>();
+builder.Services.AddScoped<IPriceListRowRepository, PriceListRowRepository>();
 
 builder.Services.AddScoped<IPriceListService, PriceListService>();
 

@@ -2,6 +2,7 @@
 using BusinessLogic.Models;
 using DataAccess.Interfaces;
 using DataAccess.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +15,28 @@ namespace BusinessLogic.Services
     {
         private readonly IPriceListRepository _priceListRepository;
         private readonly IPriceListColumnRepository _priceListColumnRepository;
+        private readonly IPriceListRowRepository _priceListRowRepository;
 
-        public PriceListService(IPriceListRepository priceListRepository, IPriceListColumnRepository priceListColumnRepository)
+        public PriceListService(IPriceListRepository priceListRepository, IPriceListColumnRepository priceListColumnRepository, IPriceListRowRepository priceListRowRepository)
         {
             _priceListRepository = priceListRepository;
             _priceListColumnRepository = priceListColumnRepository;
+            _priceListRowRepository = priceListRowRepository;
+        }
+
+        public bool AddRow(AddRowViewModel viewModel)
+        {
+            var newRow = new PriceListRow
+            {
+                PriceListId = viewModel.PriceListId,
+                PriceListCellValues = viewModel.Columns.Select(col => new PriceListCellValue
+                {
+                    ColumnId = col.Id,
+                    Value = col.Value
+                }).ToList()
+            };
+
+            return _priceListRowRepository.Add(newRow);
         }
 
         public async Task<CreatePriceListViewModel> Create()
@@ -27,7 +45,7 @@ namespace BusinessLogic.Services
 
             return new CreatePriceListViewModel()
             {
-                Columns = existingColumns.Select(x => new Models.ColumnViewModel
+                Columns = existingColumns.Select(x => new ColumnViewModel
                 {
                     Id = x.Id,
                     Name = x.Name,
@@ -58,11 +76,37 @@ namespace BusinessLogic.Services
             return _priceListRepository.Add(priceList);
         }
 
-        public async Task<bool> DeleteRowAsync(int id)
+        public async Task<bool> DeleteRowAsync(int rowId)
         {
-            var row = await _priceListRepository.GetRowByIdAsync(id);
+            var row = await _priceListRowRepository.GetByIdAsync(rowId);
 
-            return await _priceListRepository.DeleteRowAsync(row);
+            return _priceListRowRepository.Delete(row);
+        }
+
+        public async Task<AddRowViewModel> GetAddRowViewModelAsync(int priceListId)
+        {
+            var priceList = await _priceListRepository.GetByIdAsync(priceListId);
+            var model = new AddRowViewModel
+            {
+                PriceListId = priceListId,
+                Columns = priceList.PriceListColumns.Select(col => new ColumnViewModel
+                {
+                    Id = col.Id,
+                    Name = col.Name,
+                    DataType = col.DataType
+                }).ToList()
+            };
+            return model;
+        }
+
+        public async Task<List<PriceList>> GetAllPriceListsAsync()
+        {
+            return await _priceListRepository.GetAllAsync();
+        }
+
+        public async Task<PriceList> GetPriceListByIdAsync(int priceListId)
+        {
+            return await _priceListRepository.GetByIdAsync(priceListId);
         }
     }
 }

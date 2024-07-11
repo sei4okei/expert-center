@@ -9,18 +9,16 @@ namespace ExpertCenter.Controllers
 {
     public class PriceListController : Controller
     {
-        private readonly IPriceListRepository _priceListRepository;
         private readonly IPriceListService _priceListService;
 
-        public PriceListController(IPriceListRepository priceListRepository, IPriceListService priceListService)
+        public PriceListController(IPriceListService priceListService)
         {
-            _priceListRepository = priceListRepository;
             _priceListService = priceListService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var lists = await _priceListRepository.GetAllAsync();
+            var lists = await _priceListService.GetAllPriceListsAsync();
             return View(lists);
         }
 
@@ -31,7 +29,7 @@ namespace ExpertCenter.Controllers
         
         public async Task<IActionResult> PriceList(int id) 
         {
-            var list = await _priceListRepository.GetByIdAsync(id);
+            var list = await _priceListService.GetPriceListByIdAsync(id);
             return View(list);
         }
 
@@ -45,26 +43,6 @@ namespace ExpertCenter.Controllers
         [HttpPost]
         public IActionResult Create([FromForm]CreatePriceListViewModel model, string addColumn, string removeColumn)
         {
-            if (!string.IsNullOrEmpty(addColumn))
-            {
-                model.Columns.Add(new BusinessLogic.Models.ColumnViewModel());
-                return View(model);
-            }
-
-            if (!string.IsNullOrEmpty(removeColumn))
-            {
-                int idToRemove;
-                if (int.TryParse(removeColumn, out idToRemove))
-                {
-                    var columnToRemove = model.Columns.FirstOrDefault(c => c.Id == idToRemove);
-                    if (columnToRemove != null)
-                    {
-                        model.Columns.Remove(columnToRemove);
-                    }
-                }
-                return View(model);
-            }
-
             if (ModelState.IsValid) return RedirectToAction("Create");
 
             var result = _priceListService.Create(model);
@@ -77,7 +55,7 @@ namespace ExpertCenter.Controllers
         [HttpGet]
         public async Task<IActionResult> AddRow(int priceListId)
         {
-            var model = await _priceListRepository.GetAddRowViewModelAsync(priceListId);
+            var model = await _priceListService.GetAddRowViewModelAsync(priceListId);
 
             return View(model);
         }
@@ -85,20 +63,19 @@ namespace ExpertCenter.Controllers
         [HttpPost]
         public async Task<IActionResult> AddRow(AddRowViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                await _priceListRepository.AddRowAsync(model);
-                return RedirectToAction("PriceList", new { id = model.PriceListId });
-            }
-            return View(model);
+            if (ModelState.IsValid!) return View(model);
+
+            var result = _priceListService.AddRow(model);
+
+            if (result != true) return View(model);
+
+            return RedirectToAction("PriceList", new { id = model.PriceListId });
         }
 
         [HttpPost]
         public async Task<IActionResult> DeleteRow(int rowId, int priceListId)
         {
             var result = await _priceListService.DeleteRowAsync(rowId);
-
-            if (result != true) return RedirectToAction("PriceList", priceListId);
 
             return RedirectToAction("PriceList", new { id = priceListId });
         }

@@ -26,7 +26,7 @@ namespace DataAccess.Repositories
             return Save();
         }
 
-        public async Task<IEnumerable<PriceList>> GetAllAsync()
+        public async Task<List<PriceList>> GetAllAsync()
         {
             return await _context.PriceList.ToListAsync();
         }
@@ -56,50 +56,6 @@ namespace DataAccess.Repositories
         {
             _context.Update(priceList);
             return Save();
-        }
-
-        public async Task<AddRowViewModel> GetAddRowViewModelAsync(int priceListId)
-        {
-            var priceList = await GetByIdAsync(priceListId);
-            var model = new AddRowViewModel
-            {
-                PriceListId = priceListId,
-                Columns = priceList.PriceListColumns.Select(col => new ColumnViewModel
-                {
-                    Id = col.Id,
-                    Name = col.Name,
-                    DataType = col.DataType
-                }).ToList()
-            };
-            return model;
-        }
-
-        public async Task<bool> AddRowAsync(AddRowViewModel model)
-        {
-            var newRow = new PriceListRow
-            {
-                PriceListId = model.PriceListId,
-                PriceListCellValues = model.Columns.Select(col => new PriceListCellValue
-                {
-                    ColumnId = col.Id,
-                    Value = col.Value
-                }).ToList()
-            };
-
-            _context.PriceListRow.Add(newRow);
-            return Save();
-        }
-
-        public async Task<bool> DeleteRowAsync(PriceListRow row)
-        {
-            _context.Remove(row);
-
-            return Save();
-        }
-
-        public async Task<PriceListRow> GetRowByIdAsync(int id)
-        {
-            return await _context.PriceListRow.FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

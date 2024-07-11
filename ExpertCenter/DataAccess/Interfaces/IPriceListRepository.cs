@@ -4,17 +4,12 @@ namespace DataAccess.Interfaces
 {
     public interface IPriceListRepository
     {
-        Task<IEnumerable<PriceList>> GetAllAsync();
+        Task<List<PriceList>> GetAllAsync();
         Task<PriceList> GetByIdNoTrackingAsync(int id);
         Task<PriceList> GetByIdAsync(int id);
         bool Add(PriceList priceList);
         bool Update(PriceList priceList);
         bool Delete(PriceList priceList);
         bool Save();
-
-        Task<bool> AddRowAsync(AddRowViewModel model);
-        Task<AddRowViewModel> GetAddRowViewModelAsync(int priceListId);
-        Task<bool> DeleteRowAsync(PriceListRow row);
-        Task<PriceListRow> GetRowByIdAsync(int id);
     }
 }

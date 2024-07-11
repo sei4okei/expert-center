@@ -12,6 +12,5 @@ namespace DataAccess.Models
         public string Name { get; set; }
         public string DataType { get; set; }
         public string Value { get; set; }
-        public int Index { get; set; }
     }
 }
