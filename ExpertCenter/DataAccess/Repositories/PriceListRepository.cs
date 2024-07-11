@@ -89,5 +89,17 @@ namespace DataAccess.Repositories
             _context.PriceListRow.Add(newRow);
             return Save();
         }
+
+        public async Task<bool> DeleteRowAsync(PriceListRow row)
+        {
+            _context.Remove(row);
+
+            return Save();
+        }
+
+        public async Task<PriceListRow> GetRowByIdAsync(int id)
+        {
+            return await _context.PriceListRow.FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }

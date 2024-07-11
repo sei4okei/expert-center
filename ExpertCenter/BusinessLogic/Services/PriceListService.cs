@@ -46,15 +46,6 @@ namespace BusinessLogic.Services
                 PriceListRows = new List<PriceListRow>()
             };
 
-            //foreach (var existingColumn in viewModel.ExistingColumns.Where(c => c.IsSelected))
-            //{
-            //    priceList.PriceListColumns.Add(new PriceListColumn
-            //    {
-            //        Name = existingColumn.Name,
-            //        DataType = existingColumn.DataType
-            //    });
-            //}
-
             foreach (var newColumn in viewModel.Columns)
             {
                 priceList.PriceListColumns.Add(new PriceListColumn
@@ -65,6 +56,13 @@ namespace BusinessLogic.Services
             }
 
             return _priceListRepository.Add(priceList);
+        }
+
+        public async Task<bool> DeleteRowAsync(int id)
+        {
+            var row = await _priceListRepository.GetRowByIdAsync(id);
+
+            return await _priceListRepository.DeleteRowAsync(row);
         }
     }
 }

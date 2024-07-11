@@ -14,5 +14,7 @@ namespace DataAccess.Interfaces
 
         Task<bool> AddRowAsync(AddRowViewModel model);
         Task<AddRowViewModel> GetAddRowViewModelAsync(int priceListId);
+        Task<bool> DeleteRowAsync(PriceListRow row);
+        Task<PriceListRow> GetRowByIdAsync(int id);
     }
 }

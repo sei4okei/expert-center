@@ -75,9 +75,9 @@ namespace ExpertCenter.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddRow(int id)
+        public async Task<IActionResult> AddRow(int priceListId)
         {
-            var model = await _priceListRepository.GetAddRowViewModelAsync(id);
+            var model = await _priceListRepository.GetAddRowViewModelAsync(priceListId);
 
             return View(model);
         }
@@ -91,6 +91,16 @@ namespace ExpertCenter.Controllers
                 return RedirectToAction("PriceList", new { id = model.PriceListId });
             }
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteRow(int rowId, int priceListId)
+        {
+            var result = await _priceListService.DeleteRowAsync(rowId);
+
+            if (result != true) return RedirectToAction("PriceList", priceListId);
+
+            return RedirectToAction("PriceList", new { id = priceListId });
         }
 
     }

@@ -11,5 +11,6 @@ namespace BusinessLogic.Interfaces
     {
         Task<CreatePriceListViewModel> Create();
         bool Create(CreatePriceListViewModel viewModel);
+        Task<bool> DeleteRowAsync(int id);
     }
 }
