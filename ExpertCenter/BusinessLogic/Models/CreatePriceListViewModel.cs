@@ -9,7 +9,6 @@ namespace BusinessLogic.Models
     public class CreatePriceListViewModel
     {
         public string Name { get; set; }
-        public List<ColumnViewModel> Columns { get; set; }
-        public List<ColumnViewModel> ExistingColumns { get; set; }
+        public List<ColumnViewModel> Columns { get; set; } = new List<ColumnViewModel>();
     }
 }

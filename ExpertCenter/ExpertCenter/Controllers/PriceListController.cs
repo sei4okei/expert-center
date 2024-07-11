@@ -2,6 +2,7 @@ using DataAccess.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Models;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace ExpertCenter.Controllers
 {
@@ -41,10 +42,29 @@ namespace ExpertCenter.Controllers
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public IActionResult Create([FromBody] CreatePriceListViewModel model)
+        public IActionResult Create([FromForm]CreatePriceListViewModel model, string addColumn, string removeColumn)
         {
-            if (ModelState.IsValid!) return RedirectToAction("Create");
+            if (!string.IsNullOrEmpty(addColumn))
+            {
+                model.Columns.Add(new ColumnViewModel());
+                return View(model);
+            }
+
+            if (!string.IsNullOrEmpty(removeColumn))
+            {
+                int idToRemove;
+                if (int.TryParse(removeColumn, out idToRemove))
+                {
+                    var columnToRemove = model.Columns.FirstOrDefault(c => c.Id == idToRemove);
+                    if (columnToRemove != null)
+                    {
+                        model.Columns.Remove(columnToRemove);
+                    }
+                }
+                return View(model);
+            }
+
+            if (ModelState.IsValid) return RedirectToAction("Create");
 
             var result = _priceListService.Create(model);
 

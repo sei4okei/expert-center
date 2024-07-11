@@ -8,8 +8,8 @@ namespace BusinessLogic.Models
 {
     public class ColumnViewModel
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string DataType { get; set; }
-        public bool IsSelected { get; set; }
     }
 }

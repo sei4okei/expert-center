@@ -27,12 +27,11 @@ namespace BusinessLogic.Services
 
             return new CreatePriceListViewModel()
             {
-                Columns = new List<ColumnViewModel>(),
-                ExistingColumns = existingColumns.Select(x => new ColumnViewModel
+                Columns = existingColumns.Select(x => new ColumnViewModel
                 {
+                    Id = x.Id,
                     Name = x.Name,
                     DataType = x.DataType,
-                    IsSelected = false
                 }).ToList()
             };
         }
@@ -47,14 +46,14 @@ namespace BusinessLogic.Services
                 PriceListRows = new List<PriceListRow>()
             };
 
-            foreach (var existingColumn in viewModel.ExistingColumns.Where(c => c.IsSelected))
-            {
-                priceList.PriceListColumns.Add(new PriceListColumn
-                {
-                    Name = existingColumn.Name,
-                    DataType = existingColumn.DataType
-                });
-            }
+            //foreach (var existingColumn in viewModel.ExistingColumns.Where(c => c.IsSelected))
+            //{
+            //    priceList.PriceListColumns.Add(new PriceListColumn
+            //    {
+            //        Name = existingColumn.Name,
+            //        DataType = existingColumn.DataType
+            //    });
+            //}
 
             foreach (var newColumn in viewModel.Columns)
             {
