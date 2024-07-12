@@ -63,7 +63,7 @@ namespace ExpertCenter.Controllers
         [HttpPost]
         public async Task<IActionResult> AddRow(AddRowViewModel model)
         {
-            if (ModelState.IsValid!) return View(model);
+            if (ModelState.IsValid == false) return View(model);
 
             var result = _priceListService.AddRow(model);
 
