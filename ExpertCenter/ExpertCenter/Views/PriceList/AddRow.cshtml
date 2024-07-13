@@ -20,15 +20,15 @@
                     <label>@column.Name</label>
                     @if (column.DataType == "Число")
                     {
-                        <input type="number" class="form-control" name="Columns[@i].Value">
+                        <input type="number" class="form-control" name="Columns[@i].Value" required>
                     }
-                    else if (column.DataType == "Одностраничный текст")
+                    else if (column.DataType == "Однострочный текст")
                     {
-                        <input type="text" class="form-control" name="Columns[@i].Value">
+                        <input type="text" class="form-control" name="Columns[@i].Value" required>
                     }
-                    else if (column.DataType == "Многостраничный текст")
+                    else if (column.DataType == "Многострочный текст")
                     {
-                        <textarea class="form-control" name="Columns[@i].Value"></textarea>
+                        <textarea class="form-control" name="Columns[@i].Value" required></textarea>
                     }
                     <input type="hidden" name="Columns[@i].Id" value="@column.Id">
                     <input type="hidden" name="Columns[@i].Name" value="@column.Name">

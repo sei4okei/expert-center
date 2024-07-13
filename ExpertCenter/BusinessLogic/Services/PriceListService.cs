@@ -41,16 +41,21 @@ namespace BusinessLogic.Services
 
         public async Task<CreatePriceListViewModel> Create()
         {
-            var existingColumns = await _priceListColumnRepository.GetAllAsync();
-
             return new CreatePriceListViewModel()
             {
-                Columns = existingColumns.Select(x => new ColumnViewModel
+                Columns = new List<ColumnViewModel>()
                 {
-                    Id = x.Id,
-                    Name = x.Name,
-                    DataType = x.DataType,
-                }).ToList()
+                    new ColumnViewModel
+                    {
+                        Name = "Название товара",
+                        DataType = "Однострочный текст",
+                    },
+                    new ColumnViewModel
+                    {
+                        Name = "Код товара",
+                        DataType = "Число",
+                    }
+                }
             };
         }
 

@@ -6,17 +6,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
     <title>Детали прайс-листа</title>
 </head>
 <body>
     <div class="container">
         <h1>@Model.Name</h1>
-        <table class="table">
+        <table id="priceListTable" class="table display sortable">
             <thead>
                 <tr>
                     @foreach (var column in Model.PriceListColumns)
                     {
-                        <th>@column.Name</th>
+                        <th onclick="sortTable(@column.Id)">@column.Name</th>
                     }
                     <th>Действия</th>
                 </tr>
@@ -40,7 +41,75 @@
                 }
             </tbody>
         </table>
-        <a class="btn btn-primary" asp-action="AddRow" asp-route-priceListId="@Model.Id">Добавить строку</a>
+
+        <div class="row">
+            <div class="col-md-6">
+                <a class="btn btn-primary" asp-action="AddRow" asp-route-priceListId="@Model.Id">Добавить строку</a>
+            </div>
+            <div class="col-md-6">
+                <nav aria-label="Page navigation">
+                    <ul id="pagination" class="pagination justify-content-end">
+                        <li class="page-item"><a class="page-link" href="#" onclick="prevPage();">Предыдущая</a></li>
+                        <li class="page-item"><a class="page-link" href="#" onclick="nextPage();">Следующая</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
     </div>
+    <script src="~/js/jquery/jquery.min.js"></script>
+    <script src="~/js/jquery.tablesorter/js/extras/jquery.tablesorter.pager.min.js"></script>
+    <script src="~/js/datatables/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/datatables/js/jquery.dataTables.min.js"></script>
+    <link href="~/js/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet"></link>
+    <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+    <script>
+        var currentPage = 0;
+        var pageSize = 10; // Количество элементов на странице
+
+        // Функция для показа текущей страницы
+        function showPage(page) {
+            var table = document.getElementById("priceListTable");
+            var rows = table.rows;
+            var start = page * pageSize + 1;
+            var end = start + pageSize - 1;
+
+            // Перебираем строки таблицы
+            for (var i = 1; i < rows.length; i++) {
+                if (i >= start && i <= end) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+
+            currentPage = page;
+        }
+
+        // Функция для перехода на предыдущую страницу
+        function prevPage() {
+            if (currentPage > 0) {
+                showPage(currentPage - 1);
+            }
+        }
+
+        // Функция для перехода на следующую страницу
+        function nextPage() {
+            var table = document.getElementById("priceListTable");
+            var rows = table.rows;
+            var totalPages = Math.ceil((rows.length - 1) / pageSize); // Вычисляем общее количество страниц
+
+            if (currentPage < totalPages - 1) {
+                showPage(currentPage + 1);
+            }
+        }
+
+        // Вызываем showPage() при загрузке страницы, чтобы скрыть элементы, не попадающие на первую страницу
+        document.addEventListener("DOMContentLoaded", function () {
+            showPage(0);
+        });
+    </script>
+
+
 </body>
 </html>

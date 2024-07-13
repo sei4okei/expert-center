@@ -6,15 +6,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <title>Create Price List</title>
+    <title>Создание прайс-листа</title>
 </head>
 <body>
     <div class="container">
-        <h1>Create Price List</h1>
+        <h1>Создание прайс-листа</h1>
         <form asp-action="Create" method="post">
             <div class="form-group">
-                <label for="Name">Price List Name</label>
-                <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name">
+                <label for="Name">Название</label>
+                <input type="text" asp-for="Name" class="form-control" id="Name" name="Name" value="@Model.Name">
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div id="columns">
                 @for (int i = 0; i < Model.Columns.Count; i++)
@@ -23,23 +24,26 @@
                     <div class="form-row align-items-center mb-2 column" data-id="@columnId">
                         <input type="hidden" name="Columns[@i].Id" value="@Model.Columns[i].Id">
                         <div class="col">
-                            <input type="text" class="form-control" placeholder="Column Name" name="Columns[@i].Name" value="@Model.Columns[i].Name">
+                            <input type="text" class="form-control" placeholder="Название столбца" name="Columns[@i].Name" value="@Model.Columns[i].Name">
                         </div>
                         <div class="col">
-                            <select class="form-control" name="Columns[@i].DataType">
+                            <select class="form-control column-data-type" name="Columns[@i].DataType" data-selected="@Model.Columns[i].DataType">
                                 <option value="Число">Число</option>
-                                <option value="Одностраничный текст">Одностраничный текст</option>
-                                <option value="Многостраничный текст">Многостраничный текст</option>
+                                <option value="Однострочный текст">Однострочный текст</option>
+                                <option value="Многострочный текст">Многострочный текст</option>
                             </select>
                         </div>
-                        <div class="col-auto">
-                            <button type="button" class="btn btn-danger remove-column" data-id="@columnId">Remove</button>
-                        </div>
+                        @if (i >= 2)
+                        {
+                            <div class="col-auto">
+                                <button type="button" class="btn btn-danger remove-column" data-id="@columnId">Удалить</button>
+                            </div>
+                        }
                     </div>
                 }
             </div>
-            <button type="button" id="add-column" class="btn btn-primary">Add Column</button>
-            <button type="submit" class="btn btn-success">Save</button>
+            <button type="button" id="add-column" class="btn btn-primary">Добавить столбец</button>
+            <button type="submit" class="btn btn-success">Сохранить</button>
         </form>
     </div>
 
@@ -59,8 +63,8 @@
                         <div class="col">
                             <select class="form-control" name="Columns[${newIndex}].DataType">
                                 <option value="Число">Число</option>
-                                <option value="Одностраничный текст">Одностраничный текст</option>
-                                <option value="Многостраничный текст">Многостраничный текст</option>
+                                <option value="Однострочный текст">Однострочный текст</option>
+                                <option value="Многострочный текст">Многострочный текст</option>
                             </select>
                         </div>
                         <div class="col-auto">
@@ -94,7 +98,15 @@
                 }
                 return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
             }
+
+            $('.column-data-type').each(function () {
+                var selectedValue = $(this).data('selected');
+                $(this).val(selectedValue);
+            });
         });
     </script>
 </body>
 </html>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
